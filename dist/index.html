@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RTC Call API Example</title>
+</head>
+<style>
+    iframe {
+        border: none;
+    }
+</style>
+
+<body>
+    <div id="call-container"></div>
+
+    <!-- Include thet bundled JavaScript file -->
+    <script src="rtccallapi_external.js"></script>
+
+    <script>
+        // Ensure the script runs after the bundle is loaded
+        document.addEventListener('DOMContentLoaded', () => {
+            // Define the options for the RTCCallApi instance
+            const options = {
+                callId: '12345',
+                containerId: 'call-container',
+                userConfig: {
+                    displayName: 'John Doe',
+                    jobId: '12006kfllfro'
+                },
+                interfaceConfig: {
+                    width: '400px',
+                    height: '100%',
+                    title: 'Test Meeting',
+                    subtitle: 'Iframe Api',
+                    muteCam: true,
+                    muteMic: true
+                }
+            };
+
+            // Create an instance of the RTCCallApi class from the exposed library
+            const rtcCallApi = new RTCCallApiLibrary.RTCCallApi(options);
+
+            // Add event listeners
+            rtcCallApi.addEventListener(RTCCallApiLibrary.RTC_CALL_API_EVENTS.CONNECT, () => {
+                console.log('Connected to the call.');
+            });
+
+            rtcCallApi.addEventListener(RTCCallApiLibrary.RTC_CALL_API_EVENTS.DISCONNECT, () => {
+                console.log('Disconnected from the call.');
+            });
+
+            // Send commands
+            rtcCallApi.sendCommand(RTCCallApiLibrary.RTC_CALL_COMMANDS.START_CALL, { someData: 'example' });
+        });
+    </script>
+</body>
+
+</html>
