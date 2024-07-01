@@ -39,7 +39,7 @@ class RTCCallApi {
         }
 
         if (iframe && this.hostContainer) {
-            iframe.src = `https://rtc.jobpro.app/kld-14so-0ng?displayName=${this.options.userConfig.displayName}&jobId=${this.options.userConfig.jobId}&width=${this.options.interfaceConfig.width}&height=${this.options.interfaceConfig.height}&title=${this.options.interfaceConfig.title}&subtitle=${this.options.interfaceConfig.subtitle}&muteMic=${this.options.interfaceConfig.muteMic}&muteCam=${this.options.interfaceConfig.muteCam}`; //+ this.options.callId;
+            iframe.src = `https://rtc.jobpro.app/kld-14so-0ng?displayName=${this.options.userConfig.displayName}&jobId=${this.options.userConfig.jobId}&title=${this.options.interfaceConfig.title}&subtitle=${this.options.interfaceConfig.subtitle}&muteMic=${this.options.interfaceConfig.muteMic}&muteCam=${this.options.interfaceConfig.muteCam}`; //+ this.options.callId;
 
             this.hostContainer.append(iframe)
             console.log('iframe src: ', iframe.src)
@@ -50,12 +50,20 @@ class RTCCallApi {
         this.sendCommand(RTC_CALL_COMMANDS.JOIN_CALL, ({ callId: this.options.callId, jobId: this.options.userConfig.jobId, displayName: this.options.userConfig.displayName }));
     }
 
-    addEventListener(eventName: RTC_CALL_API_EVENTS, callback: () => void) {
-        this.socket.on(eventName, callback);
+    addEventListener(eventName: RTC_CALL_API_EVENTS, callback: (data: any) => {}) {
+        this.socket.on('message', ({ eventType, data }: { eventType: RTC_CALL_API_EVENTS; data: any }) => {
+            if (eventType === eventName) {
+                callback(data);
+            }
+        });
     }
 
     sendCommand(command: RTC_CALL_COMMANDS, data: JoinCallInterface | EndCallInterface | ToggleMicInterface | ToggleCamInterface | SetDisplayNameInterface | SetAvatarInterface | SetTitleInterface | SetSubtitleInterface) {
-        this.socket.emit(command, data);
+        const payload = {
+            eventType: command,
+            data,
+        }
+        this.socket.emit('meesage', payload);
     }
     async getCallInfo() {
         return await this.socket.emitWithAck(RTC_CALL_FUNCTIONS.GET_CALL_INFO, { callId: this.options.callId }, (callInfo: any) => callInfo);
