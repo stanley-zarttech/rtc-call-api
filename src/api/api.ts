@@ -4,15 +4,25 @@ import { RTCCallApiOptions } from "./types";
 import { EndCallInterface, JoinCallInterface, SetAvatarInterface, SetDisplayNameInterface, SetSubtitleInterface, SetTitleInterface, ToggleCamInterface, ToggleMicInterface } from "./types/commands.interface";
 
 class RTCCallApi {
-    private socketUrl = 'chats.pactocoin.com';
-    private domain: 'https://rtc.jobpro.app/kld-14so-0ng';
+    private socketUrl = 'https://webrtcapi.pactocoin.com';
+    private domain: 'https://rtcall.pactocoin.com';
     private socket: Socket;
     private hostContainer: HTMLDivElement;
 
     constructor(private options: RTCCallApiOptions) {
         const { callId, interfaceConfig, userConfig, containerId } = options;
         console.log('callId: ', callId, 'interfaceConfig: ', interfaceConfig, 'domain: ',);
-        this.socket = io(this.socketUrl);
+        this.socket = io(this.socketUrl, {
+            transports: ['websocket', 'polling'],
+            query: {
+                callId: this.options.callId,
+                isFrameAPI: true,
+                participantId: this.options.userConfig.jobId,
+            },
+            auth: {
+                token: '55b3f0b526ee7a9b69571af059536e1e4672dc5ccc1c0044'
+            }
+        });
         this.hostContainer = document.getElementById(containerId) as HTMLDivElement;
         this.loadDomain();
         // ... other initialization code ...
@@ -22,7 +32,9 @@ class RTCCallApi {
         // /kld-14so-0ng?dispala=turnofcam
         const iframe = document.createElement('iframe');
         iframe.width = '100%'
-        iframe.height = '100vh'
+        iframe.height = '100vh';
+        iframe.allow = 'camera';
+        iframe.allow = 'microphone';
 
         if (this.options.interfaceConfig.height) {
             const height = this.options.interfaceConfig.height.replace('%', 'vh')
@@ -37,9 +49,8 @@ class RTCCallApi {
             iframe.style.width = this.options.interfaceConfig.width;
             this.hostContainer.style.width = this.options.interfaceConfig.width;
         }
-
         if (iframe && this.hostContainer) {
-            iframe.src = `https://rtc.jobpro.app/kld-14so-0ng?displayName=${this.options.userConfig.displayName}&jobId=${this.options.userConfig.jobId}&title=${this.options.interfaceConfig.title}&subtitle=${this.options.interfaceConfig.subtitle}&muteMic=${this.options.interfaceConfig.muteMic}&muteCam=${this.options.interfaceConfig.muteCam}`; //+ this.options.callId;
+            iframe.src = `https://rtcall.pactocoin.com?callId=${this.options.callId}&displayName=${this.options.userConfig.displayName}&participantId=${this.options.userConfig.jobId}&title=${this.options.interfaceConfig.title}&subtitle=${this.options.interfaceConfig.subtitle}&muteMic=${this.options.interfaceConfig.muteMic}&muteCamera=${this.options.interfaceConfig.muteCam}&profilePicuteUrl=${this.options.userConfig.profilePicuteUrl}&color=${this.options.userConfig.color}`; //+ this.options.callId;
 
             this.hostContainer.append(iframe)
             console.log('iframe src: ', iframe.src)

@@ -15,6 +15,8 @@ export interface InterfaceConfig {
 }
 
 export interface UserConfig {
+    color: string;
+    profilePicuteUrl: string;
     displayName: string;
     jobId: string;
 }
