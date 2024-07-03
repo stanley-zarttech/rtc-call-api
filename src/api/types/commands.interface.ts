@@ -44,3 +44,4 @@ export interface SetSubtitleInterface {
     callId: string;
     subtitle: string;
 }
+export type EventCallback<T = any> = (data: T) => void;

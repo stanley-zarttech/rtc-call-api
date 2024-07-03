@@ -1,13 +1,14 @@
 import { Socket, io } from "socket.io-client";
 import { RTC_CALL_API_EVENTS, RTC_CALL_COMMANDS, RTC_CALL_FUNCTIONS } from "./enums/enum";
 import { RTCCallApiOptions } from "./types";
-import { EndCallInterface, JoinCallInterface, SetAvatarInterface, SetDisplayNameInterface, SetSubtitleInterface, SetTitleInterface, ToggleCamInterface, ToggleMicInterface } from "./types/commands.interface";
+import { EventCallback } from "./types/commands.interface";
 
 class RTCCallApi {
     private socketUrl = 'https://webrtcapi.pactocoin.com'; // 'http://localhost:9000';
     private domain: 'https://rtcall.pactocoin.com';
     private socket: Socket;
     private hostContainer: HTMLDivElement;
+    private eventListeners: { [eventType: string]: EventCallback[] } = {};
 
     constructor(private options: RTCCallApiOptions) {
         const { callId, interfaceConfig, userConfig, containerId } = options;
@@ -16,7 +17,7 @@ class RTCCallApi {
             transports: ['websocket', 'polling'],
             query: {
                 callId: this.options.callId,
-                isFrameAPI: true,
+                isIframeAPI: true,
                 participantId: this.options.userConfig.jobId,
             },
             auth: {
@@ -25,34 +26,40 @@ class RTCCallApi {
         });
         this.hostContainer = document.getElementById(containerId) as HTMLDivElement;
 
-
         this.socket.on('connect', async () => {
             this.loadDomain();
             console.log('socket is successfully connected: ', this.socket.id);
 
+            const res = await this.sendCommand(RTC_CALL_COMMANDS.JOIN_CALL, {
+                callId: this.options.callId,
+                participantId: this.options.userConfig.jobId,
+                displayName: this.options.userConfig.displayName
+            });
+            console.log('res: ', res);
 
-
-            const res = await this.sendCommand(RTC_CALL_COMMANDS.JOIN_CALL, ({ callId: this.options.callId, participantId: this.options.userConfig.jobId, displayName: this.options.userConfig.displayName }));
-            console.log('res: ', res)
-        })
-
+            this.socket.on('message', ({ eventType, data }: { eventType: string; data: any }) => {
+                console.log('event from server: ', data);
+                if (this.eventListeners[eventType]) {
+                    this.eventListeners[eventType].forEach(callback => callback(data));
+                } else {
+                    console.error(`No listeners found for event type: ${eventType}`);
+                }
+            });
+        });
     }
 
     private loadDomain() {
-        // /kld-14so-0ng?dispala=turnofcam
         const iframe = document.createElement('iframe');
-        iframe.width = '100%'
+        iframe.width = '100%';
         iframe.height = '100vh';
-        iframe.allow = 'camera';
-        iframe.allow = 'microphone';
+        iframe.allow = 'camera; microphone';
 
         if (this.options.interfaceConfig.height) {
-            const height = this.options.interfaceConfig.height.replace('%', 'vh')
-            if (this.options.interfaceConfig.height.charAt(this.options.interfaceConfig.height.length - 1) == '%') {
+            const height = this.options.interfaceConfig.height.replace('%', 'vh');
+            if (this.options.interfaceConfig.height.endsWith('%')) {
                 this.options.interfaceConfig.height = height;
-                console.log('interface config: ', this.options.interfaceConfig)
-                iframe.style.height = this.options.interfaceConfig.height;
-                this.hostContainer.style.height = this.options.interfaceConfig.height;
+                iframe.style.height = height;
+                this.hostContainer.style.height = height;
             }
         }
         if (this.options.interfaceConfig.width) {
@@ -60,63 +67,56 @@ class RTCCallApi {
             this.hostContainer.style.width = this.options.interfaceConfig.width;
         }
         if (iframe && this.hostContainer) {
-            iframe.src = `https://rtcall.pactocoin.com?callId=${this.options.callId}&displayName=${this.options.userConfig.displayName}&participantId=${this.options.userConfig.jobId}&title=${this.options.interfaceConfig.title}&subtitle=${this.options.interfaceConfig.subtitle}&muteMic=${this.options.interfaceConfig.muteMic}&muteCamera=${this.options.interfaceConfig.muteCam}&profilePicuteUrl=${this.options.userConfig.profilePicuteUrl}&color=${this.options.userConfig.color}`; //+ this.options.callId;
-
-            this.hostContainer.append(iframe)
-            console.log('iframe src: ', iframe.src)
-            this.socket.on('message', (data: any) => {
-                console.log('data from event: ', data)
-                // if (eventType === eventName) {
-                //     callback(data);
-                // }
-            });
-            // this.addEventListener(RTC_CALL_API_EVENTS.PARTICIPANT_LEFT, (data: any) => { console.log('participant left: ', data) })
+            iframe.src = `https://rtcall.pactocoin.com?callId=${this.options.callId}&displayName=${this.options.userConfig.displayName}&participantId=${this.options.userConfig.jobId}&title=${this.options.interfaceConfig.title}&subtitle=${this.options.interfaceConfig.subtitle}&muteMic=${this.options.interfaceConfig.muteMic}&muteCamera=${this.options.interfaceConfig.muteCam}&profilePicuteUrl=${this.options.userConfig.profilePicuteUrl}&color=${this.options.userConfig.color}`;
+            this.hostContainer.append(iframe);
+            console.log('iframe src: ', iframe.src);
         } else {
             console.error('Iframe element not found');
         }
-
     }
 
-    addEventListener(eventName: RTC_CALL_API_EVENTS, callback: (data: any) => {}) {
-        this.socket.on('message', ({ eventType, data }) => {
-            console.log('data: ', data)
-            if (eventType === eventName) {
-                callback(data);
-            }
-        });
+    addEventListener<T = any>(eventType: string, callback: EventCallback<T>): void {
+        console.log('adding event listener: ', eventType);
+        if (!this.eventListeners[eventType]) {
+            this.eventListeners[eventType] = [];
+        }
+        this.eventListeners[eventType].push(callback as EventCallback);
+        console.log('Listeners: ', this.eventListeners);
+    }
+
+    removeEventListener<T = any>(eventType: string, callback: EventCallback<T>): void {
+        if (this.eventListeners[eventType]) {
+            this.eventListeners[eventType] = this.eventListeners[eventType].filter(cb => cb !== callback);
+        } else {
+            console.error(`No listeners found for event type: ${eventType}`);
+        }
     }
 
     sendCommand(command: RTC_CALL_COMMANDS, data: any) {
-        console.log('command: ', command)
+        console.log('command: ', command);
         const payload = {
             eventType: command,
             data,
-        }
-        console.log('Send command: ', payload)
+        };
+        console.log('Send command: ', payload);
         return new Promise((resolve: any, reject: any) => {
             this.socket.emit('message', payload, (response: any, error: any) => {
-                console.log('response: ', response)
                 if (!error) {
                     resolve(response);
                 } else {
-                    console.log('error: ', error)
                     reject(error);
                 }
             });
-
         });
-        // .then((response: any) => {
-        //     console.log('Command response: ', response)
-        // });
-        console.log('reaching here')
     }
+
     async getCallInfo() {
         return await this.socket.emitWithAck(RTC_CALL_FUNCTIONS.GET_CALL_INFO, { callId: this.options.callId }, (callInfo: any) => callInfo);
     }
+
     async getParticipantInfo() {
-        return await this.socket.emitWithAck(RTC_CALL_FUNCTIONS.GET_PARTICIPANT_INFO, ({ callId: this.options.callId, jobId: this.options.userConfig.jobId }), (participantInfo: any) => participantInfo);
+        return await this.socket.emitWithAck(RTC_CALL_FUNCTIONS.GET_PARTICIPANT_INFO, { callId: this.options.callId, jobId: this.options.userConfig.jobId }, (participantInfo: any) => participantInfo);
     }
 }
 
 export default RTCCallApi;
-

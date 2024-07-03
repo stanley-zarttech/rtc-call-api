@@ -26,8 +26,8 @@
                 callId: '12345',
                 containerId: 'call-container',
                 userConfig: {
-                    displayName: 'John Doe',
-                    jobId: '12006kfllfro',
+                    displayName: 'Stanley Joel',
+                    jobId: (Math.random() * 100).toString('32').replace('.', ''),
                     profilePicuteUrl: '',
                     color: '#56f34d'
                 },
@@ -45,16 +45,31 @@
             const rtcCallApi = new RTCCallApiLibrary.RTCCallApi(options);
 
             // Add event listeners
-            rtcCallApi.addEventListener(RTCCallApiLibrary.RTC_CALL_API_EVENTS.CONNECT, () => {
-                console.log('Connected to the call.');
+            rtcCallApi.addEventListener('participantLeft', (data) => {
+                console.log('Connected to the call.', data);
             });
 
-            rtcCallApi.addEventListener(RTCCallApiLibrary.RTC_CALL_API_EVENTS.PARTICIPANT_JOINED, (data) => {
-                console.log('participant join event: ', data);
+            rtcCallApi.addEventListener('participantJoined', (data) => {
+                console.log('participant joined event: ', data);
             });
+            rtcCallApi.addEventListener('newPeer', (data) => {
+                console.log('new peer added: ', data)
+            });
+            rtcCallApi.addEventListener('isRejoining', (data) => {
+                console.log('user rejoining: ', data)
+            })
+            // rtcCallApi.addEventListener('isRejoining', (data) => {
+            //     console.log('user rejoining: ', data)
+            // })
+            // rtcCallApi.addEventListener('isRejoining', (data) => {
+            //     console.log('user rejoining: ', data)
+            // })
+            // rtcCallApi.addEventListener('isRejoining', (data) => {
+            //     console.log('user rejoining: ', data)
+            // })
 
             // Send commands
-            rtcCallApi.sendCommand(RTCCallApiLibrary.RTC_CALL_COMMANDS.START_CALL, { someData: 'example' });
+            // rtcCallApi.sendCommand(RTCCallApiLibrary.RTC_CALL_COMMANDS.START_CALL, { someData: 'example' });
         });
     </script>
 </body>
