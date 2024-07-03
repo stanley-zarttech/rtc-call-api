@@ -1,7 +1,7 @@
 export interface JoinCallInterface {
     callId: string;
     displayName: string;
-    jobId: string;
+    participantId: string;
 }
 
 export interface EndCallInterface {

@@ -49,8 +49,8 @@
                 console.log('Connected to the call.');
             });
 
-            rtcCallApi.addEventListener(RTCCallApiLibrary.RTC_CALL_API_EVENTS.DISCONNECT, () => {
-                console.log('Disconnected from the call.');
+            rtcCallApi.addEventListener(RTCCallApiLibrary.RTC_CALL_API_EVENTS.PARTICIPANT_JOINED, (data) => {
+                console.log('participant join event: ', data);
             });
 
             // Send commands

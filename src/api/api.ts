@@ -4,7 +4,7 @@ import { RTCCallApiOptions } from "./types";
 import { EndCallInterface, JoinCallInterface, SetAvatarInterface, SetDisplayNameInterface, SetSubtitleInterface, SetTitleInterface, ToggleCamInterface, ToggleMicInterface } from "./types/commands.interface";
 
 class RTCCallApi {
-    private socketUrl = 'https://webrtcapi.pactocoin.com';
+    private socketUrl = 'https://webrtcapi.pactocoin.com'; // 'http://localhost:9000';
     private domain: 'https://rtcall.pactocoin.com';
     private socket: Socket;
     private hostContainer: HTMLDivElement;
@@ -24,8 +24,18 @@ class RTCCallApi {
             }
         });
         this.hostContainer = document.getElementById(containerId) as HTMLDivElement;
-        this.loadDomain();
-        // ... other initialization code ...
+
+
+        this.socket.on('connect', async () => {
+            this.loadDomain();
+            console.log('socket is successfully connected: ', this.socket.id);
+
+
+
+            const res = await this.sendCommand(RTC_CALL_COMMANDS.JOIN_CALL, ({ callId: this.options.callId, participantId: this.options.userConfig.jobId, displayName: this.options.userConfig.displayName }));
+            console.log('res: ', res)
+        })
+
     }
 
     private loadDomain() {
@@ -54,27 +64,51 @@ class RTCCallApi {
 
             this.hostContainer.append(iframe)
             console.log('iframe src: ', iframe.src)
+            this.socket.on('message', (data: any) => {
+                console.log('data from event: ', data)
+                // if (eventType === eventName) {
+                //     callback(data);
+                // }
+            });
+            // this.addEventListener(RTC_CALL_API_EVENTS.PARTICIPANT_LEFT, (data: any) => { console.log('participant left: ', data) })
         } else {
             console.error('Iframe element not found');
         }
 
-        this.sendCommand(RTC_CALL_COMMANDS.JOIN_CALL, ({ callId: this.options.callId, jobId: this.options.userConfig.jobId, displayName: this.options.userConfig.displayName }));
     }
 
     addEventListener(eventName: RTC_CALL_API_EVENTS, callback: (data: any) => {}) {
-        this.socket.on('message', ({ eventType, data }: { eventType: RTC_CALL_API_EVENTS; data: any }) => {
+        this.socket.on('message', ({ eventType, data }) => {
+            console.log('data: ', data)
             if (eventType === eventName) {
                 callback(data);
             }
         });
     }
 
-    sendCommand(command: RTC_CALL_COMMANDS, data: JoinCallInterface | EndCallInterface | ToggleMicInterface | ToggleCamInterface | SetDisplayNameInterface | SetAvatarInterface | SetTitleInterface | SetSubtitleInterface) {
+    sendCommand(command: RTC_CALL_COMMANDS, data: any) {
+        console.log('command: ', command)
         const payload = {
             eventType: command,
             data,
         }
-        this.socket.emit('meesage', payload);
+        console.log('Send command: ', payload)
+        return new Promise((resolve: any, reject: any) => {
+            this.socket.emit('message', payload, (response: any, error: any) => {
+                console.log('response: ', response)
+                if (!error) {
+                    resolve(response);
+                } else {
+                    console.log('error: ', error)
+                    reject(error);
+                }
+            });
+
+        });
+        // .then((response: any) => {
+        //     console.log('Command response: ', response)
+        // });
+        console.log('reaching here')
     }
     async getCallInfo() {
         return await this.socket.emitWithAck(RTC_CALL_FUNCTIONS.GET_CALL_INFO, { callId: this.options.callId }, (callInfo: any) => callInfo);
