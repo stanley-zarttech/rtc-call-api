@@ -4,7 +4,7 @@ import { RTCCallApiOptions } from "./types";
 import { EventCallback } from "./types/commands.interface";
 
 class RTCCallApi {
-    private socketUrl = process.env.SOCKET_URL;
+    private socketUrl = process.env.SOCKET_URL || 'https://webrtcapi.pactocoin.com';
     private socket: Socket;
     private hostContainer: HTMLDivElement;
     private eventListeners: { [eventType: string]: EventCallback[] } = {};
@@ -67,7 +67,7 @@ class RTCCallApi {
             this.hostContainer.style.width = this.options.interfaceConfig.width;
         }
         if (iframe && this.hostContainer) {
-            const domain = process.env.DOMAIN;
+            const domain = process.env.DOMAIN || 'https://rtcall.pactocoin.com';
             console.log('Domain: ', domain)
             iframe.src = `${domain}?callId=${this.options.callId}&displayName=${this.options.userConfig.displayName}&participantId=${this.options.userConfig.jobId}&title=${this.options.interfaceConfig.title}&subtitle=${this.options.interfaceConfig.subtitle}&muteMic=${this.options.interfaceConfig.muteMic}&muteCamera=${this.options.interfaceConfig.muteCam}&profilePicuteUrl=${this.options.userConfig.profilePicuteUrl}&color=${this.options.userConfig.color}`;
             this.hostContainer.append(iframe);
