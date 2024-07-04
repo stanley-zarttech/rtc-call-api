@@ -17,9 +17,11 @@
 
     <!-- Include thet bundled JavaScript file -->
     <script src="rtccallapi_external.js"></script>
-
+    <!-- <script defer
+        src="https://github.com/Zarttech-main/rtc-call-iframe-api/blob/main/dist/rtccallapi_external.js"></script> -->
     <script>
         // Ensure the script runs after the bundle is loaded
+        let participant = {};
         document.addEventListener('DOMContentLoaded', () => {
             // Define the options for the RTCCallApi instance
             const options = {
@@ -50,7 +52,10 @@
             });
 
             rtcCallApi.addEventListener('participantJoined', (data) => {
+                console.log('participant: ', participant)
                 console.log('participant joined event: ', data);
+                participant = data.participant;
+                console.log('participant: ', participant)
             });
             rtcCallApi.addEventListener('newPeer', (data) => {
                 console.log('new peer added: ', data)

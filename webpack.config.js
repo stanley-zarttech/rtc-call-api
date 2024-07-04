@@ -16,13 +16,14 @@ module.exports = {
   },
   output: {
     filename: "rtccallapi_external.js",
-    path: path.resolve(__dirname, "dist"),
+    path: path.resolve(__dirname, "public"),
     library: "RTCCallApiLibrary",
     libraryTarget: "var",
   },
   devServer: {
+    // contentBase: path.join(__dirname, "public"),
     static: {
-      directory: path.join(__dirname, "dist"),
+      directory: path.join(__dirname, "public"),
     },
     compress: true,
     port: 7000,
