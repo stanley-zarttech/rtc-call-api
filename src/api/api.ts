@@ -4,13 +4,13 @@ import { RTCCallApiOptions } from "./types";
 import { EventCallback } from "./types/commands.interface";
 
 class RTCCallApi {
-    private socketUrl = 'https://webrtcapi.pactocoin.com'; // 'http://localhost:9000';
-    private domain: 'https://rtcall.pactocoin.com';
+    private socketUrl = process.env.SOCKET_URL;
     private socket: Socket;
     private hostContainer: HTMLDivElement;
     private eventListeners: { [eventType: string]: EventCallback[] } = {};
 
     constructor(private options: RTCCallApiOptions) {
+        console.log('socketUrl and token: ', this.socketUrl, process.env.TOKEN)
         const { callId, interfaceConfig, userConfig, containerId } = options;
         console.log('callId: ', callId, 'interfaceConfig: ', interfaceConfig, 'domain: ',);
         this.socket = io(this.socketUrl, {
@@ -21,7 +21,7 @@ class RTCCallApi {
                 participantId: this.options.userConfig.jobId,
             },
             auth: {
-                token: '55b3f0b526ee7a9b69571af059536e1e4672dc5ccc1c0044'
+                token: process.env.TOKEN
             }
         });
         this.hostContainer = document.getElementById(containerId) as HTMLDivElement;
@@ -67,7 +67,9 @@ class RTCCallApi {
             this.hostContainer.style.width = this.options.interfaceConfig.width;
         }
         if (iframe && this.hostContainer) {
-            iframe.src = `https://rtcall.pactocoin.com?callId=${this.options.callId}&displayName=${this.options.userConfig.displayName}&participantId=${this.options.userConfig.jobId}&title=${this.options.interfaceConfig.title}&subtitle=${this.options.interfaceConfig.subtitle}&muteMic=${this.options.interfaceConfig.muteMic}&muteCamera=${this.options.interfaceConfig.muteCam}&profilePicuteUrl=${this.options.userConfig.profilePicuteUrl}&color=${this.options.userConfig.color}`;
+            const domain = process.env.DOMAIN;
+            console.log('Domain: ', domain)
+            iframe.src = `${domain}?callId=${this.options.callId}&displayName=${this.options.userConfig.displayName}&participantId=${this.options.userConfig.jobId}&title=${this.options.interfaceConfig.title}&subtitle=${this.options.interfaceConfig.subtitle}&muteMic=${this.options.interfaceConfig.muteMic}&muteCamera=${this.options.interfaceConfig.muteCam}&profilePicuteUrl=${this.options.userConfig.profilePicuteUrl}&color=${this.options.userConfig.color}`;
             this.hostContainer.append(iframe);
             console.log('iframe src: ', iframe.src);
         } else {
