@@ -34,13 +34,16 @@ module.exports = {
     libraryTarget: "var",
   },
   devServer: {
+    host: "0.0.0.0",
     // contentBase: path.join(__dirname, "public"),
     static: {
       directory: path.join(__dirname, "public"),
     },
     compress: true,
     port: 7000,
-    allowedHosts: "all",
+    allowedHosts: ["api.pactocoin.com/iframeapi", "api.pactocoin.com"],
+
+    // disableHostCheck: true, // Disables host check
   },
   mode: "production",
   node: false,
