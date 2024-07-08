@@ -14,9 +14,8 @@
 # EXPOSE 7000
 
 # CMD ["npm", "start"]
-
 # Stage 1: Build the application
-FROM node:18-alpine
+FROM node:18-alpine AS build
 
 # Set the working directory
 WORKDIR /app
