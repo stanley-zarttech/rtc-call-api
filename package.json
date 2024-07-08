@@ -6,7 +6,7 @@
   "scripts": {
     "build": "webpack --config webpack.config.js",
     "dev": "webpack-dev-server --mode=development",
-    "start": "node public/index",
+    "start": "node public/index.js",
     "postbuild": "node postbuild.js"
   },
   "keywords": [],
