@@ -21,7 +21,7 @@ class RTCCallApi {
                 participantId: this.options.userConfig.jobId,
             },
             auth: {
-                token: process.env.TOKEN
+                token: process.env.TOKEN || 'replace-token'
             }
         });
         this.hostContainer = document.getElementById(containerId) as HTMLDivElement;

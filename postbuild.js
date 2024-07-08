@@ -12,7 +12,7 @@ console.log("token: ", token);
 const fileContent = fs.readFileSync(filePath, "utf8");
 const updatedContent = fileContent
   //   .replace(/SOCKET_URL_PLACEHOLDER/g, socketUrl)
-  .replace(/{token:""}/, `{ token: ${token} }`);
+  .replace(/replace-token/, token);
 //   .replace(/DOMAIN_PLACEHOLDER/g, domain);
 
 fs.writeFileSync(filePath, updatedContent);
