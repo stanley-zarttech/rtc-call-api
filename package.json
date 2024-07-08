@@ -6,7 +6,7 @@
   "scripts": {
     "build": "webpack --config webpack.config.js",
     "dev": "webpack-dev-server --mode=development",
-    "start": "webpack serve --open --mode=production --config webpack.config.js"
+    "start": "node public/index"
   },
   "keywords": [],
   "author": "",
@@ -15,6 +15,7 @@
     "@types/socket.io-client": "^3.0.0",
     "babel-loader": "^8.2.2",
     "dotenv": "^16.4.5",
+    "express": "^4.19.2",
     "remove-debug-loader": "^0.2.6",
     "socket.io-client": "^4.7.5"
   },
