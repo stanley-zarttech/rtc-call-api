@@ -32,18 +32,20 @@ module.exports = {
     path: path.resolve(__dirname, "public"),
     library: "RTCCallApiLibrary",
     libraryTarget: "var",
+    publicPath: "/iframe/", // Ensure this matches your subpath
   },
   devServer: {
     host: "0.0.0.0",
-    // contentBase: path.join(__dirname, "public"),
     static: {
       directory: path.join(__dirname, "public"),
     },
     compress: true,
     port: 7000,
-    allowedHosts: ["api.pactocoin.com/iframeapi", "api.pactocoin.com"],
+    allowedHosts: ["api.pactocoin.com"], // Only include the hostname
 
-    // disableHostCheck: true, // Disables host check
+    historyApiFallback: {
+      index: "/iframe/index.html", // For Single Page Applications (SPA)
+    },
   },
   mode: "production",
   node: false,
