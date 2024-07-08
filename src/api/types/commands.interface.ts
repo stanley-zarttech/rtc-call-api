@@ -16,11 +16,11 @@ export interface ToggleCamInterface {
     muteCam: boolean;
 }
 
-export interface ToggleMicInterface {
-    callId: string;
-    jobId: string;
-    muteMic: boolean;
-}
+// export interface ToggleMicInterface {
+//     callId: string;
+//     jobId: string;
+//     muteMic: boolean;
+// }
 
 export interface SetAvatarInterface {
     jobId: string;

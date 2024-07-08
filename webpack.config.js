@@ -40,6 +40,7 @@ module.exports = {
     },
     compress: true,
     port: 7000,
+    allowedHosts: "all",
   },
   mode: "production",
   node: false,
