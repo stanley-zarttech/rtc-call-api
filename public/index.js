@@ -9,6 +9,7 @@ app.get("/", (req, res) => {
 app.get("/:name", (req, res) => {
   const name = req.params.name;
   console.log("file name: ", name);
+  console.log("TOKEN: ", process.env.TOKEN);
   res.sendFile(name, { root: "." });
 });
 const port = process.env.PORT || 7000;
