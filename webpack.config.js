@@ -48,5 +48,5 @@ module.exports = {
       index: "/iframe/index.html", // For Single Page Applications (SPA)
     },
   },
-  target: node,
+  node: false,
 };
