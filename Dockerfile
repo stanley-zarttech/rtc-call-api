@@ -3,7 +3,7 @@ FROM node:18-alpine
 
 WORKDIR /app
 
-COPY .env ./
+# COPY .env ./
 
 # Load the environment variables
 ENV SOCKET_URL=$SOCKET_URL
