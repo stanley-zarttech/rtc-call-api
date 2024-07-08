@@ -4,7 +4,7 @@ import { RTCCallApiOptions } from "./types";
 import { EventCallback } from "./types/commands.interface";
 
 class RTCCallApi {
-    private socketUrl = process.env.SOCKET_URL || 'https://webrtcapi.pactocoin.com'; //';
+    private socketUrl = process.env.SOCKET_URL || 'https://webrtcapi.pactocoin.com'; //'
     private socket: Socket;
     private hostContainer: HTMLDivElement;
     private eventListeners: { [eventType: string]: EventCallback[] } = {};

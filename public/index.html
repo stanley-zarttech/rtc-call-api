@@ -48,7 +48,8 @@
 
             // Add event listeners
             rtcCallApi.addEventListener('participantLeft', (data) => {
-                console.log('Connected to the call.', data);
+                console.log('Connected to the call.', data); //this.participant(data)
+
             });
 
             rtcCallApi.addEventListener('participantJoined', (data) => {
@@ -74,7 +75,7 @@
             // })
 
             // Send commands
-            // rtcCallApi.sendCommand(RTCCallApiLibrary.RTC_CALL_COMMANDS.START_CALL, { someData: 'example' });
+            rtcCallApi.sendCommand(RTCCallApiLibrary.RTC_CALL_COMMANDS.START_CALL, { someData: 'example' });
         });
     </script>
 </body>
