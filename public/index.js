@@ -11,7 +11,7 @@ app.get("/:name", (req, res) => {
   console.log("file name: ", name);
   res.sendFile(name, { root: "." });
 });
-const port = process.env.PORT || 4000;
+const port = process.env.PORT || 7000;
 app.listen(port, () => {
   console.log("Server started on port ", `http://localhost:${port}`);
 });
