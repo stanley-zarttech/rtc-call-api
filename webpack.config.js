@@ -31,9 +31,10 @@ module.exports = {
     filename: "rtccallapi_external.js",
     path: path.resolve(__dirname, "public"),
     library: "RTCCallApiLibrary",
-    libraryTarget: "var",
-    publicPath: "/iframe/", // Ensure this matches your subpath
+    libraryTarget: "umd",
+    publicPath: "/",
   },
+
   devServer: {
     host: "0.0.0.0",
     static: {
@@ -47,6 +48,5 @@ module.exports = {
       index: "/iframe/index.html", // For Single Page Applications (SPA)
     },
   },
-  mode: "production",
-  node: false,
+  target: node,
 };
