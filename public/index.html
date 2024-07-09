@@ -16,7 +16,8 @@
     <div id="call-container"></div>
 
     <!-- Include thet bundled JavaScript file -->
-    <script src="https://rtc-call-api.onrender.com/rtccallapi_external.js"></script>
+    <!-- <script src="https://iframe-api-cdn.onrender.com/rtccallapi_external.js"></script> -->
+    <script src="rtccallapi_external.js"></script>
     <script>
         // Ensure the script runs after the bundle is loaded
         let participant = {};
@@ -33,7 +34,7 @@
                 },
                 interfaceConfig: {
                     width: '400px',
-                    height: '40%',
+                    height: '400px',
                     title: 'Test Call',
                     subtitle: 'Iframe Api',
                     muteCam: true,

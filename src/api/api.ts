@@ -55,17 +55,18 @@ class RTCCallApi {
         iframe.allow = 'camera; microphone';
 
         if (this.options.interfaceConfig.height) {
-            const height = this.options.interfaceConfig.height.replace('%', 'vh');
-            if (this.options.interfaceConfig.height.endsWith('%')) {
-                this.options.interfaceConfig.height = height;
-                iframe.style.height = height;
-                this.hostContainer.style.height = height;
-            }
+            // const height = this.options.interfaceConfig.height.replace('%', 'vh');
+            // if (this.options.interfaceConfig.height.endsWith('%')) {
+            //     this.options.interfaceConfig.height = height;
+            iframe.style.height = this.options.interfaceConfig.height;
+            //     this.hostContainer.style.height = height;
+            // }
         }
         if (this.options.interfaceConfig.width) {
             iframe.style.width = this.options.interfaceConfig.width;
-            this.hostContainer.style.width = this.options.interfaceConfig.width;
+            // this.hostContainer.style.width = this.options.interfaceConfig.width;
         }
+        console.log('iframe width: ', iframe.width, ' iframe height: ', iframe.height)
         if (iframe && this.hostContainer) {
             const domain = process.env.DOMAIN || 'https://rtcall.pactocoin.com';
             console.log('Domain: ', domain)
