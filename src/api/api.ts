@@ -53,6 +53,7 @@ class RTCCallApi {
         iframe.width = '100%';
         iframe.height = '100vh';
         iframe.allow = 'camera; microphone';
+        iframe.style.border = 'none';
 
         if (this.options.interfaceConfig.height) {
             // const height = this.options.interfaceConfig.height.replace('%', 'vh');
