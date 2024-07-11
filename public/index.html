@@ -28,10 +28,10 @@
         document.addEventListener('DOMContentLoaded', () => {
             // Define the options for the RTCCallApi instance
             const options = {
-                callId: '12345',
+                callId: '0tf8hg8nisa',
                 containerId: 'call-container',
                 userConfig: {
-                    displayName: 'Stanley Joel',
+                    displayName: 'John Mark',
                     jobId: (Math.random() * 100).toString('32').replace('.', ''),
                     profilePicuteUrl: '',
                     color: '#56f34d'
@@ -51,7 +51,14 @@
 
             // Add event listeners
             rtcCallApi.addEventListener('participantLeft', (data) => {
-                console.log('Connected to the call.', data); //this.participant(data)
+                console.log('participant left.', data); //this.participant(data)
+
+            });
+            rtcCallApi.addEventListener('leftCall', (data) => {
+                console.log('you left the call.', data); //this.participant(data)
+            });
+            rtcCallApi.addEventListener('peerLeft', (data) => {
+                console.log('participant left left.', data); //this.participant(data)
 
             });
 
@@ -79,7 +86,13 @@
 
             // Send commands
             // rtcCallApi.sendCommand(RTCCallApiLibrary.RTC_CALL_COMMANDS.START_CALL, { someData: 'example' });
+            setTimeout(async () => {
+                const callInfo = await rtcCallApi.sendCommand('getCallInfo',
+                    {});
+                console.log('callInfo: ', callInfo)
+            }, 7000);
         });
+
     </script>
 </body>
 

@@ -115,7 +115,12 @@ class RTCCallApi {
     }
 
     async getCallInfo() {
-        return await this.socket.emitWithAck(RTC_CALL_FUNCTIONS.GET_CALL_INFO, { callId: this.options.callId }, (callInfo: any) => callInfo);
+
+        const payload = {
+            eventType: RTC_CALL_FUNCTIONS.GET_CALL_INFO,
+            data: {},
+        };
+        return this.sendCommand(RTC_CALL_COMMANDS.GET_CALL_INFO, {})
     }
 
     async getParticipantInfo() {

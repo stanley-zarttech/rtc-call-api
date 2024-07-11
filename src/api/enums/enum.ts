@@ -17,10 +17,11 @@ export enum RTC_CALL_COMMANDS {
     SET_TITLE = 'SET_TITLE',
     SET_SUBTITLE = 'SET_SUBTITLE',
     NEW_PEER = 'newPeer',
-    IS_REJOINING = 'isRejoining'
+    IS_REJOINING = 'isRejoining',
+    GET_CALL_INFO = "getCallInfo"
 }
 export enum RTC_CALL_FUNCTIONS {
-    GET_CALL_INFO = 'GET_CALL_INFO',
+    GET_CALL_INFO = 'getCallInfo',
     GET_PARTICIPANT_INFO = 'GET_PARTICIPANT_INFO',
     GET_PARTICIPANT_AVATAR_URL = 'GET_PARTICIPANT_AVATAR_URL'
 }         
