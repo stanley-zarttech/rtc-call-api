@@ -28,7 +28,7 @@
         document.addEventListener('DOMContentLoaded', () => {
             // Define the options for the RTCCallApi instance
             const options = {
-                callId: '0tf8hg8nisa',
+                callId: '02nubqcrsvr',
                 containerId: 'call-container',
                 userConfig: {
                     displayName: 'John Mark',
@@ -57,9 +57,11 @@
             rtcCallApi.addEventListener('leftCall', (data) => {
                 console.log('you left the call.', data); //this.participant(data)
             });
-            rtcCallApi.addEventListener('peerLeft', (data) => {
+            rtcCallApi.addEventListener('peerLeft', async (data) => {
                 console.log('participant left left.', data); //this.participant(data)
-
+                const callInfo = await rtcCallApi.sendCommand('getCallInfo',
+                    {});
+                console.log('callInfo: ', callInfo)
             });
 
             rtcCallApi.addEventListener('participantJoined', (data) => {
