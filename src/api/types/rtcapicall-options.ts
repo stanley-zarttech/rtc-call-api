@@ -6,6 +6,8 @@ export interface RTCCallApiOptions {
 }
 
 export interface InterfaceConfig {
+    backgroundColor: string;
+    textColor: string;
     width: string;
     height: string,
     title: string,
