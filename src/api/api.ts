@@ -52,7 +52,7 @@ class RTCCallApi {
         const iframe = document.createElement('iframe');
         iframe.width = '100%';
         iframe.height = '100vh';
-        iframe.allow = 'camera; microphone';
+        iframe.allow = 'camera; microphone;"fullscreen; autoplay"';
         iframe.style.border = 'none';
 
         if (this.options.interfaceConfig.height) {
