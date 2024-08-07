@@ -48,7 +48,38 @@ class RTCCallApi {
         });
         this.socket.on('connect_error', (error) => {
             console.log('Error connecting socket: ', error)
-            document.getElementById('error').style.display = 'flex';
+            const errorContainer = document.createElement('div');
+            errorContainer.id = 'error-container';
+            errorContainer.style.display = 'flex';
+            errorContainer.style.flexDirection = 'column';
+            errorContainer.style.color = 'red';
+            errorContainer.style.justifyContent = 'center';
+            errorContainer.style.alignItems = 'center';
+            errorContainer.style.height = '100%';
+
+            const button = document.createElement('button');
+            button.style.backgroundColor = 'red';
+            button.style.color = 'white';
+            button.style.width = 'fit-content';
+            button.style.padding = '10px 20px'
+            button.style.height = '100%';
+            button.style.border = 'none';
+            button.style.borderRadius = '10px';
+            button.id = 'submit';
+            button.value = 'Leave Call';
+            button.innerHTML = 'Leave Call'
+
+            const h1 = document.createElement('h1');
+            h1.innerText = 'Sorry, we could not connect you to the call.';
+            errorContainer.append(h1);
+            errorContainer.append(button);
+            if (!document.getElementById('error-container'))
+                this.hostContainer.append(errorContainer);
+
+            button.addEventListener('click', () => {
+                this.eventListeners[RTC_CALL_COMMANDS.LEAVE_CALL].forEach(callback => callback(error))
+
+            })
         })
     }
     private loadDomain() {

@@ -36,10 +36,7 @@
 
 <body>
     <div id="call-container"></div>
-    <div class="error" id="error">
-        <h1>Sorry, we could not connect you to the call</h1>
-        <button type="submit">Leave Call</button>
-    </div>
+
     <!-- Include thet bundled JavaScript file -->
     <!-- <script src="https://iframe-api-cdn.onrender.com/rtccallapi_external.js"></script> -->
     <script src="rtccallapi_external.js"></script>
@@ -99,9 +96,10 @@
             rtcCallApi.addEventListener('isRejoining', (data) => {
                 console.log('user rejoining: ', data)
             })
-            // rtcCallApi.addEventListener('isRejoining', (data) => {
-            //     console.log('user rejoining: ', data)
-            // })
+
+            rtcCallApi.addEventListener('leaveCall', (data) => {
+                console.log('leaveCall event listerner: ', data);
+            })
             // rtcCallApi.addEventListener('isRejoining', (data) => {
             //     console.log('user rejoining: ', data)
             // })
