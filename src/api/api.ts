@@ -46,8 +46,11 @@ class RTCCallApi {
                 }
             });
         });
+        this.socket.on('connect_error', (error) => {
+            console.log('Error connecting socket: ', error)
+            document.getElementById('error').style.display = 'flex';
+        })
     }
-
     private loadDomain() {
         const iframe = document.createElement('iframe');
         iframe.width = '100%';
