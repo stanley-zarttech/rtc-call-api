@@ -11,6 +11,24 @@
         border: none;
     } */
 
+    .error {
+        color: red;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        display: none;
+    }
+
+    .error button {
+        background-color: red;
+        color: white;
+        width: 100px;
+        height: 40px;
+        border: none;
+        border-radius: 10px;
+    }
+
     body {
         background-color: black;
     }
@@ -18,7 +36,10 @@
 
 <body>
     <div id="call-container"></div>
-
+    <div class="error" id="error">
+        <h1>Sorry, we could not connect you to the call</h1>
+        <button type="submit">Leave Call</button>
+    </div>
     <!-- Include thet bundled JavaScript file -->
     <!-- <script src="https://iframe-api-cdn.onrender.com/rtccallapi_external.js"></script> -->
     <script src="rtccallapi_external.js"></script>
