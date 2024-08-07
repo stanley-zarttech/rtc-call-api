@@ -27,6 +27,7 @@ class RTCCallApi {
         this.hostContainer = document.getElementById(containerId) as HTMLDivElement;
 
         this.socket.on('connect', async () => {
+            this.hostContainer.childNodes.item(0)?.remove()
             this.loadDomain();
             console.log('socket is successfully connected: ', this.socket.id);
 
@@ -47,6 +48,7 @@ class RTCCallApi {
             });
         });
         this.socket.on('connect_error', (error) => {
+            this.hostContainer.childNodes.item(0)?.remove();
             console.log('Error connecting socket: ', error)
             const errorContainer = document.createElement('div');
             errorContainer.id = 'error-container';
@@ -84,6 +86,7 @@ class RTCCallApi {
     }
     private loadDomain() {
         const iframe = document.createElement('iframe');
+        iframe.id = 'call-iframe'
         iframe.width = '100%';
         iframe.height = '100vh';
         iframe.allow = 'camera; microphone;fullscreen; autoplay';
