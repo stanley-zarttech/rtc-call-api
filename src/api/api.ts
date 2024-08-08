@@ -49,7 +49,6 @@ class RTCCallApi {
         });
         this.socket.on('connect_error', (error) => {
             this.hostContainer.childNodes.item(0)?.remove();
-            console.log('Error connecting socket: ', error)
             const errorContainer = document.createElement('div');
             errorContainer.id = 'error-container';
             errorContainer.style.display = 'flex';
@@ -71,7 +70,7 @@ class RTCCallApi {
             button.value = 'Leave Call';
             button.innerHTML = 'Leave Call'
 
-            const h1 = document.createElement('h1');
+            const h1 = document.createElement('h3');
             h1.innerText = 'Sorry, we could not connect you to the call.';
             errorContainer.append(h1);
             errorContainer.append(button);
@@ -79,6 +78,7 @@ class RTCCallApi {
                 this.hostContainer.append(errorContainer);
 
             button.addEventListener('click', () => {
+                console.log('leaving the call because of error')
                 this.eventListeners[RTC_CALL_COMMANDS.LEAVE_CALL].forEach(callback => callback(error))
 
             })
