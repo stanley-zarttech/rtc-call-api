@@ -48,7 +48,7 @@ class RTCCallApi {
             });
         });
         this.socket.on('connect_error', (error) => {
-            this.hostContainer.childNodes.item(0)?.remove();
+            this.hostContainer?.childNodes?.item(0)?.remove();
             const errorContainer = document.createElement('div');
             errorContainer.id = 'error-container';
             errorContainer.style.display = 'flex';
@@ -66,6 +66,7 @@ class RTCCallApi {
             button.style.height = '100%';
             button.style.border = 'none';
             button.style.borderRadius = '10px';
+
             button.id = 'submit';
             button.value = 'Leave Call';
             button.innerHTML = 'Leave Call'
@@ -79,7 +80,7 @@ class RTCCallApi {
 
             button.addEventListener('click', () => {
                 console.log('leaving the call because of error')
-                this.eventListeners[RTC_CALL_COMMANDS.LEAVE_CALL].forEach(callback => callback(error))
+                this.eventListeners[RTC_CALL_COMMANDS.LEAVE_CALL]?.forEach(callback => callback(error))
 
             })
         })
