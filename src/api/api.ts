@@ -14,16 +14,17 @@ class RTCCallApi {
         const { callId, interfaceConfig, userConfig, containerId } = options;
         console.log('callId: ', callId, 'interfaceConfig: ', interfaceConfig, 'domain: ',);
         this.socket = io(this.socketUrl, {
-            transports: ['websocket', 'polling'],
+            // transports: ['websocket', 'polling'],
             query: {
                 callId: this.options.callId,
                 isIframeAPI: true,
                 participantId: this.options.userConfig.jobId,
             },
             auth: {
-                token: process.env.TOKEN || 'replace-token'
+                token: process.env.TOKEN
             }
         });
+        console.log('socket: ', this.socket.io)
         this.hostContainer = document.getElementById(containerId) as HTMLDivElement;
 
         this.socket.on('connect', async () => {
