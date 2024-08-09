@@ -79,8 +79,8 @@ class RTCCallApi {
                 this.hostContainer.append(errorContainer);
 
             button.addEventListener('click', () => {
-                console.log('leaving the call because of error')
-                this.eventListeners[RTC_CALL_COMMANDS.LEAVE_CALL]?.forEach(callback => callback(error))
+                console.log('leaving the call because of error');
+                (this.eventListeners[RTC_CALL_COMMANDS.LEAVE_CALL] ?? []).forEach(callback => callback(error))
 
             })
         })
