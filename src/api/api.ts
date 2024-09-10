@@ -8,17 +8,19 @@ class RTCCallApi {
     private socket: Socket;
     private hostContainer: HTMLDivElement;
     private eventListeners: { [eventType: string]: EventCallback[] } = {};
+    token: string;
 
     constructor(private options: RTCCallApiOptions) {
-        console.log('socketUrl and token: ', this.socketUrl, process.env.TOKEN)
+        this.token = process.env.TOKEN;
+        console.log('socketUrl and token: ', this.socketUrl,this.token);
         const { callId, interfaceConfig, userConfig, containerId } = options;
-        console.log('callId: ', callId, 'interfaceConfig: ', interfaceConfig, 'domain: ',);
+        console.log('callId: ', callId, 'interfaceConfig: ', interfaceConfig, 'domain: ',process.env.DOMAIN, ' TOKEN: ',this.token);
         this.socket = io(this.socketUrl, {
             // transports: ['websocket', 'polling'],
             query: {
-                callId: this.options.callId,
-                isIframeAPI: true,
-                participantId: this.options.userConfig.jobId,
+                meetingId: this.options.callId,
+                // isIframeAPI: true,
+                peerId: this.options.userConfig.jobId,
             },
             auth: {
                 token: process.env.TOKEN
@@ -33,9 +35,9 @@ class RTCCallApi {
             console.log('socket is successfully connected: ', this.socket.id);
 
             const res = await this.sendCommand(RTC_CALL_COMMANDS.JOIN_CALL, {
-                callId: this.options.callId,
-                participantId: this.options.userConfig.jobId,
-                displayName: this.options.userConfig.displayName
+                meetingId: this.options.callId,
+                peerId: this.options.userConfig.jobId,
+                name: this.options.userConfig.displayName
             });
             console.log('res: ', res);
 
@@ -110,7 +112,7 @@ class RTCCallApi {
         if (iframe && this.hostContainer) {
             const domain = process.env.DOMAIN || 'https://rtcall.pactocoin.com';
             console.log('Domain: ', domain)
-            iframe.src = `${domain}?callId=${this.options.callId}&displayName=${this.options.userConfig.displayName}&participantId=${this.options.userConfig.jobId}&title=${this.options.interfaceConfig.title}&subtitle=${this.options.interfaceConfig.subtitle}&muteMic=${this.options.interfaceConfig.muteMic}&muteCamera=${this.options.interfaceConfig.muteCam}&profilePicuteUrl=${this.options.userConfig.profilePicuteUrl}&color=${this.options.userConfig.color}&backgroundColor=${this.options.interfaceConfig.backgroundColor}&textColor=${this.options.interfaceConfig.textColor}`;
+            iframe.src = `${domain}?meetingId=${this.options.callId}&name=${this.options.userConfig.displayName}&peerId=${this.options.userConfig.jobId}&title=${this.options.interfaceConfig.title}&subtitle=${this.options.interfaceConfig.subtitle}&muteMic=${this.options.interfaceConfig.muteMic}&muteCamera=${this.options.interfaceConfig.muteCam}&profilePicuteUrl=${this.options.userConfig.profilePicuteUrl}&color=${this.options.userConfig.color}&backgroundColor=${this.options.interfaceConfig.backgroundColor}&textColor=${this.options.interfaceConfig.textColor}`;
             this.hostContainer.append(iframe);
             console.log('iframe src: ', iframe.src);
         } else {

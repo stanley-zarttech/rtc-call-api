@@ -79,17 +79,17 @@
             });
             rtcCallApi.addEventListener('peerLeft', async (data) => {
                 console.log('participant left left.', data); //this.participant(data)
-                const callInfo = await rtcCallApi.sendCommand('getCallInfo',
+                const callInfo = await rtcCallApi.sendCommand('getMeetingInfo',
                     {});
                 console.log('callInfo: ', callInfo)
             });
 
-            rtcCallApi.addEventListener('participantJoined', (data) => {
-                console.log('participant: ', participant)
-                console.log('participant joined event: ', data);
-                participant = data.participant;
-                console.log('participant: ', participant)
-            });
+            // rtcCallApi.addEventListener('participantJoined', (data) => {
+            //     console.log('participant: ', participant)
+            //     console.log('participant joined event: ', data);
+            //     participant = data.participant;
+            //     console.log('participant: ', participant)
+            // });
             rtcCallApi.addEventListener('newPeer', (data) => {
                 console.log('new peer added: ', data)
             });
@@ -97,7 +97,7 @@
                 console.log('user rejoining: ', data)
             })
 
-            rtcCallApi.addEventListener('leaveCall', (data) => {
+            rtcCallApi.addEventListener('disconnectMeeting', (data) => {
                 console.log('leaveCall event listerner: ', data);
             })
             // rtcCallApi.addEventListener('isRejoining', (data) => {
@@ -110,7 +110,7 @@
             // Send commands
             // rtcCallApi.sendCommand(RTCCallApiLibrary.RTC_CALL_COMMANDS.START_CALL, { someData: 'example' });
             setTimeout(async () => {
-                const callInfo = await rtcCallApi.sendCommand('getCallInfo',
+                const callInfo = await rtcCallApi.sendCommand('getMeetingInfo',
                     {});
                 console.log('callInfo: ', callInfo)
             }, 7000);
