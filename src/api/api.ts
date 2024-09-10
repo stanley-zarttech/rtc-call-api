@@ -12,9 +12,9 @@ class RTCCallApi {
 
     constructor(private options: RTCCallApiOptions) {
         this.token = process.env.TOKEN;
-        console.log('socketUrl and token: ', this.socketUrl,this.token);
+        console.log('socketUrl and token: ', this.socketUrl, this.token);
         const { callId, interfaceConfig, userConfig, containerId } = options;
-        console.log('callId: ', callId, 'interfaceConfig: ', interfaceConfig, 'domain: ',process.env.DOMAIN, ' TOKEN: ',this.token);
+        console.log('callId: ', callId, 'interfaceConfig: ', interfaceConfig, 'domain: ', process.env.DOMAIN, ' TOKEN: ', this.token);
         this.socket = io(this.socketUrl, {
             // transports: ['websocket', 'polling'],
             query: {
@@ -146,10 +146,10 @@ class RTCCallApi {
         console.log('Send command: ', payload);
         return new Promise((resolve: any, reject: any) => {
             this.socket.emit('message', payload, (response: any, error: any) => {
-                if (!error) {
-                    resolve(response);
-                } else {
+                if (error) {
                     reject(error);
+                } else {
+                    resolve(response);
                 }
             });
         });
