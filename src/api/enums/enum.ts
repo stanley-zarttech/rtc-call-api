@@ -18,7 +18,7 @@ export enum RTC_CALL_COMMANDS {
     SET_SUBTITLE = 'SET_SUBTITLE',
     NEW_PEER = 'newPeer',
     IS_REJOINING = 'isRejoining',
-    GET_CALL_INFO = "getCallInfo"
+    GET_CALL_INFO = "getMeetingInfo"
 }
 export enum RTC_CALL_FUNCTIONS {
     GET_CALL_INFO = 'getMeetingInfo',

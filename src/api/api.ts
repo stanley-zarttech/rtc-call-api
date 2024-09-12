@@ -37,7 +37,7 @@ class RTCCallApi {
             const res = await this.sendCommand(RTC_CALL_COMMANDS.JOIN_CALL, {
                 meetingId: this.options.callId,
                 peerId: this.options.userConfig.jobId,
-                name: this.options.userConfig.displayName
+                peerName: this.options.userConfig.displayName
             });
             console.log('res: ', res);
 
@@ -138,17 +138,19 @@ class RTCCallApi {
     }
 
     sendCommand(command: RTC_CALL_COMMANDS, data: any) {
-        console.log('command: ', command);
+        // console.log('command: ', command);
         const payload = {
             eventType: command,
             data,
         };
         console.log('Send command: ', payload);
         return new Promise((resolve: any, reject: any) => {
-            this.socket.emit('message', payload, (response: any, error: any) => {
+            this.socket.emit('message', payload, (error: any, response: any) => {
                 if (error) {
+                    // console.log('Command error: ', error)
                     reject(error);
                 } else {
+                    // console.log('Command Response: ', response)
                     resolve(response);
                 }
             });
