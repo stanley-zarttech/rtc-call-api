@@ -10,8 +10,9 @@ export enum RTC_CALL_COMMANDS {
     JOIN_CALL = 'connectMeeting',
     END_CALL = 'disconnectMeeting',
     LEAVE_CALL = 'disconnectMeeting',
-    TOGGLE_MIC = 'TOGGLE_MIC',
-    TOGGLE_CAM = 'TOGGLE_CAM',
+    TOGGLE_MIC = 'toggleMic',
+    TOGGLE_CAM = 'toggleCamera',
+    SHARE_SCREEN = 'toggleScreenShare',
     SET_AVATAR = 'SET_AVATAR',
     SET_DISPLAY_NAME = 'SET_DISPLAY_NAME',
     SET_TITLE = 'SET_TITLE',
@@ -19,6 +20,7 @@ export enum RTC_CALL_COMMANDS {
     NEW_PEER = 'newPeer',
     IS_REJOINING = 'isRejoining',
     GET_CALL_INFO = "getMeetingInfo"
+
 }
 export enum RTC_CALL_FUNCTIONS {
     GET_CALL_INFO = 'getMeetingInfo',
