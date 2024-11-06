@@ -110,10 +110,23 @@
             // Send commands
             // rtcCallApi.sendCommand(RTCCallApiLibrary.RTC_CALL_COMMANDS.START_CALL, { someData: 'example' });
             setTimeout(async () => {
-                const callInfo = await rtcCallApi.sendCommand('getMeetingInfo',
+                const callInfo =   rtcCallApi.sendCommand('getMeetingInfo',
                     {});
-                console.log('callInfo: ', callInfo)
+                console.log('callInfo: ', callInfo)  ;
+                   const toggleCam =   rtcCallApi.sendCommand('toggleCamera',
+                    {});
+                console.log('toggleCamera: ', callInfo) ;
+                    const toggleMic =  rtcCallApi.sendCommand('toggleMic',
+                    {});
+                    
+                console.log('toggleMic: ', callInfo);
+              
             }, 7000);
+            setTimeout(() => {
+                 const toggleScreenShare = rtcCallApi.sendCommand('toggleScreenShare',
+                    {});
+                console.log('toggleMic: ', toggleScreenShare);
+            }, 10000);
         });
 
     </script>

@@ -93,7 +93,7 @@ class RTCCallApi {
         iframe.id = 'call-iframe'
         iframe.width = '100%';
         iframe.height = '100vh';
-        iframe.allow = 'camera; microphone;fullscreen; autoplay';
+        iframe.allow = 'camera; microphone;fullscreen; autoplay;display-capture;';
         iframe.style.border = 'none';
 
         if (this.options.interfaceConfig.height) {
