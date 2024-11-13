@@ -14,6 +14,7 @@ class RTCCallApi {
         this.token = process.env.TOKEN;
         console.log('socketUrl and token: ', this.socketUrl, this.token);
         const { callId, interfaceConfig, userConfig, containerId } = options;
+        console.log('container id: ', containerId)
         console.log('callId: ', callId, 'interfaceConfig: ', interfaceConfig, 'domain: ', process.env.DOMAIN, ' TOKEN: ', this.token);
         this.socket = io(this.socketUrl, {
             // transports: ['websocket', 'polling'],
