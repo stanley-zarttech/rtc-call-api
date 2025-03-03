@@ -113,7 +113,7 @@ class RTCCallApi {
         if (iframe && this.hostContainer) {
             const domain = process.env.DOMAIN || 'https://rtcall.pactocoin.com';
             console.log('Domain: ', domain)
-            iframe.src = `${domain}?meetingId=${this.options.callId}&name=${this.options.userConfig.displayName}&peerId=${this.options.userConfig.jobId}&title=${this.options.interfaceConfig.title}&subtitle=${this.options.interfaceConfig.subtitle}&muteMic=${this.options.interfaceConfig.muteMic}&muteCamera=${this.options.interfaceConfig.muteCam}&profilePicuteUrl=${this.options.userConfig.profilePicuteUrl}&color=${this.options.userConfig.color}&backgroundColor=${this.options.interfaceConfig.backgroundColor}&textColor=${this.options.interfaceConfig.textColor}`;
+            iframe.src = `${domain}?meetingId=${this.options.callId}&name=${this.options.userConfig.displayName}&peerId=${this.options.userConfig.jobId}&title=${this.options.interfaceConfig.title}&subtitle=${this.options.interfaceConfig.subtitle}&mic=${true}&muteCamera=${false}&profilePicuteUrl=${this.options.userConfig.profilePicuteUrl}&color=${this.options.userConfig.color}&backgroundColor=${this.options.interfaceConfig.backgroundColor}&textColor=${this.options.interfaceConfig.textColor}`;
             this.hostContainer.append(iframe);
             console.log('iframe src: ', iframe.src);
         } else {
