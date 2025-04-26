@@ -20,6 +20,7 @@ export enum RTC_CALL_COMMANDS {
     IS_REJOINING = 'isRejoining',
     GET_CALL_INFO = "getCallInfo",
     INVITE = 'invite',
+    SEND_TEAM_MEMBERS='sendTeamMembers'
 }
 export enum RTC_CALL_FUNCTIONS {
     GET_CALL_INFO = 'getMeetingInfo',

@@ -123,7 +123,7 @@
                     {});
 
                 console.log('toggleMic: ', callInfo);
-                const sendTeamMembers = rtcCallApi.sendCommand('sendTeamMembers',
+                const sendTeamMembers =await rtcCallApi.sendCommand('sendTeamMembers',
                 [
                     {
                         id: '1',
