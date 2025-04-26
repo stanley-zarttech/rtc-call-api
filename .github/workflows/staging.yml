@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 name: Deploy to GKE
 
 on:
@@ -45,51 +44,3 @@ jobs:
           git add projects/rtc-iframe/deployment.yml
           git commit -m "updated deployment"
           git push
-=======
-name: Deploy to GKE
-
-on:
-  push:
-    branches:
-      - staging
-jobs:
-  deploy:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-
-      - name: Authenticate with Docker Hub
-        run: docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
-
-      - name: Build and Push Docker Image
-        run: |
-         
-          IMAGE_TAG="jobpro-rtc-iframe-v${{ github.run_id }}"
-          docker build -t zarttechjobpro/jobpro:$IMAGE_TAG .
-          docker tag zarttechjobpro/jobpro:$IMAGE_TAG zarttechjobpro/jobpro:jobpro-rtc-iframe-v${{ github.run_id }}
-          docker push zarttechjobpro/jobpro:jobpro-rtc-iframe-v${{ github.run_id }}
-
-      - name: Remove Unused Docker Images
-        run: docker system prune -f
-
-      
-      - name: Set Git Config
-        run: |
-          git config --global user.email "timileyin@zarttech.com"
-          git config --global user.name "timileyinzt"
-    
-
-      - name: Clone Repository
-        run: |
-          git clone https://${{ secrets.USERNAME }}:${{ secrets.TOKEN }}@github.com/Zarttech-main/provisioning.git
-
-      - name: Update Kubernetes YAML
-        run: |
-          cd provisioning
-          sed -i 's/jobpro-rtc-iframe-v.*/'jobpro-rtc-iframe-v${{ github.run_id }}'/g' projects/rtc-iframe/deployment.yml
-          cat projects/rtc-iframe/deployment.yml
-          git add projects/rtc-iframe/deployment.yml
-          git commit -m "updated deployment"
-          git push
->>>>>>> 449292d075b342fdb0688e4dcbf31b2800c1643b
